@@ -1,0 +1,13 @@
+.btn-primary{
+    position:absolute;
+    left: 50%;
+    width: 200px;
+    height: 50px;
+}
+
+.form-check-label
+{
+     margin:1px;
+     padding-right: 8px;
+
+}
