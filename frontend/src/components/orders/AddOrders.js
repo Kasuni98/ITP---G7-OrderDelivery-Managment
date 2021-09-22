@@ -13,11 +13,11 @@ export default function AddOrders({ editOrder, isEdit }) {
     const [Cname, setname] = useState(isEdit ? editOrder.Cname : "");
     const [phone, setphone] = useState(isEdit ? editOrder.phone : "");
     const [email, setemail] = useState(isEdit ? editOrder.email : "");
-    const [orderitems, setitems] = useState(isEdit ? editOrder.orderitems : "");
+    const [orderitems, setitems] = useState(isEdit ? editOrder.orderitems : []);
     const [quantity, setquantity] = useState(isEdit ? editOrder.quantity : "");
     const [orderdate, setdate] = useState(isEdit ? editOrder.orderdate : "");
 
-    console.log(phone)
+    
     
     function sendData(e) {
         e.preventDefault();
@@ -30,6 +30,7 @@ export default function AddOrders({ editOrder, isEdit }) {
             orderdate
 
         }
+        
         axios.post('/api/orders/add', newOrder).then(() => {
             alert("Order Added")
 
@@ -37,6 +38,10 @@ export default function AddOrders({ editOrder, isEdit }) {
             alert(err)
         })
 
+    }
+
+    function appendItems(){
+        
     }
 
     function editOrderCall(e) {
@@ -127,7 +132,7 @@ export default function AddOrders({ editOrder, isEdit }) {
                         </div> : <div><div class="form-check form-check-inline" ><br></br>
                             <input class="form-check-input" type="checkbox" id="inlineCheckbox1" value="Laptop(Dell)" onChange={(e) => {
 
-                                setitems(e.target.value);
+                                    setitems([...orderitems,e.target.value]);
 
                             }}></input>
                             <label class="form-check-label" for="inlineCheckbox1" >Laptop(Dell)</label>
@@ -135,7 +140,8 @@ export default function AddOrders({ editOrder, isEdit }) {
                           <div class="form-check form-check-inline">
                                 <input class="form-check-input" type="checkbox" id="inlineCheckbox2" value="Laptop(Asus)" onChange={(e) => {
 
-                                    setitems(e.target.value);
+                                    setitems([...orderitems,e.target.value]);
+
 
                                 }}></input>
                                 <label class="form-check-label" for="inlineCheckbox2">Laptop(Asus)</label>
@@ -143,7 +149,8 @@ export default function AddOrders({ editOrder, isEdit }) {
                             <div class="form-check form-check-inline">
                                 <input class="form-check-input" type="checkbox" id="inlineCheckbox2" value="Laptop(Acer)" onChange={(e) => {
 
-                                    setitems(e.target.value);
+                                    setitems([...orderitems,e.target.value]);
+
 
                                 }}></input>
                                 <label class="form-check-label" for="inlineCheckbox2">Laptop(Acer)</label>
@@ -152,7 +159,8 @@ export default function AddOrders({ editOrder, isEdit }) {
                             <div class="form-check form-check-inline">
                                 <input class="form-check-input" type="checkbox" id="inlineCheckbox2" value="TV(LG)" onChange={(e) => {
 
-                                    setitems(e.target.value);
+                                    setitems([...orderitems,e.target.value]);
+
 
                                 }}></input>
                                 <label class="form-check-label" for="inlineCheckbox2">TV(LG)</label>
@@ -160,7 +168,7 @@ export default function AddOrders({ editOrder, isEdit }) {
                             <div class="form-check form-check-inline">
                                 <input class="form-check-input" type="checkbox" id="inlineCheckbox2" value="TV(Abans)" onChange={(e) => {
 
-                                    setitems(e.target.value);
+                                    setitems([...orderitems,e.target.value]);
 
                                 }}></input>
                                 <label class="form-check-label" for="inlineCheckbox2">TV(Abans)</label>
