@@ -82,4 +82,19 @@ router.route('/get/:id').get(async(req, res) => {
     })
 })
 
+// search orders
+router.route('/search/:searchText').get(async(req, res) => {
+    const searchText = req.params.searchText;
+    if (searchText == '*'){
+        await Order.find({}).then((orders)=>{
+            res.status(200).send({results: orders});
+        });
+    } else{
+        await Order.find({ $text : { $search : searchText }}).then((orders) => {
+            res.status(200).send({results: orders});
+        });
+    }
+  
+});
+
 module.exports = router;

@@ -29,6 +29,8 @@ const orderSchema = new mongoose.Schema({
     }
 
 
-})
+});
+
+orderSchema.index({'$**': 'text'});
 
 module.exports=mongoose.model("Order", orderSchema);

@@ -23,6 +23,7 @@ const useStyles = makeStyles({
 
 const FetchAllOrders = ({add,addChange, getOrder}) => {
   const [deliverys, setOrders] = useState([])
+  // const [searchText, setname] = useState("");
   const classes = useStyles();
   useEffect(() => {
     const getOrders = () => {
@@ -39,7 +40,7 @@ const FetchAllOrders = ({add,addChange, getOrder}) => {
     getOrders()
   }, [])
 
-  console.log(deliverys.length);
+ 
 
   function deleteOrder(orderId){
     console.log(orderId);
@@ -61,11 +62,26 @@ const FetchAllOrders = ({add,addChange, getOrder}) => {
     getOrder(order);
   }
 
+  function handleChange(searchText){
+
+    if(searchText === ''){
+      searchText = "*";
+    }
+    axios.get('/api/orders/search/'+ searchText).then((res)=> {
+      console.log(searchText);
+      console.log(res.data);
+    }).catch((error)=>{
+      console.log(error);
+    });
+  }
+
   return (
     <Fragment>
         <Navbar />
     <div>
-      <br></br><br></br><br></br>
+      <input type="text"  class="form-control" onChange={(event)=>{
+        handleChange(event.target.value);
+      }}/>
       <h1>All Orders</h1><br></br><br></br>
       <TableContainer component={Paper}>
       <Table className={classes.table} aria-label="simple table">
