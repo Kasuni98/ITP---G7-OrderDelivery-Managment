@@ -58,10 +58,36 @@ const FetchAllDelivery = ({add,addChange, getDelivery}) => {
     getDelivery(delivery);
   }
 
+  function HandleChange(searchText){
+    setDeliverys([]);
+    if(searchText === ''){
+      searchText = "*";
+    }
+
+    axios.get('/api/deliverys/search/'+ searchText).then((res)=> {
+      console.log(searchText);
+      console.log(res.data);
+      
+      if(res.data.length > 0){
+        setDeliverys(res.data);
+      }
+      
+  
+    }).catch((error)=>{
+      console.log(error);
+    });
+
+  }
+
 
 
   return (
     <div>
+      <div>
+        <input type="text" className="form-control" onChange={(event)=>{
+          HandleChange(event.target.value);
+        }}></input>
+      </div>
       <h1>All Delivery</h1><br></br><br></br>
       <TableContainer component={Paper}>
       <Table className={classes.table} aria-label="simple table">

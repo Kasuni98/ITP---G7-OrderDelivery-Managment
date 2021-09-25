@@ -29,6 +29,7 @@ const deliverySchema = new mongoose.Schema({
     },
 
 
-})
+});
+deliverySchema.index({'$**': 'text'});
 
 module.exports=mongoose.model("Delivery", deliverySchema);
