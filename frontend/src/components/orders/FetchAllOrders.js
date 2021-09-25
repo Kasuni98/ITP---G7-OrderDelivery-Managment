@@ -62,14 +62,21 @@ const FetchAllOrders = ({add,addChange, getOrder}) => {
     getOrder(order);
   }
 
-  function handleChange(searchText){
-
+  function HandleChange(searchText){
+    setOrders([]);
     if(searchText === ''){
       searchText = "*";
     }
+
     axios.get('/api/orders/search/'+ searchText).then((res)=> {
       console.log(searchText);
       console.log(res.data);
+      
+      if(res.data.length > 0){
+        setOrders(res.data);
+      }
+      
+  
     }).catch((error)=>{
       console.log(error);
     });
@@ -80,7 +87,7 @@ const FetchAllOrders = ({add,addChange, getOrder}) => {
         <Navbar />
     <div>
       <input type="text"  class="form-control" onChange={(event)=>{
-        handleChange(event.target.value);
+        HandleChange(event.target.value);
       }}/>
       <h1>All Orders</h1><br></br><br></br>
       <TableContainer component={Paper}>
