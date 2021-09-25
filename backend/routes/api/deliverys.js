@@ -1,5 +1,6 @@
 const router = require('express').Router();
 let Delivery = require('../../models/Delivery');
+let fastCsv = require('fast-csv');
 
 //adding delivery
 router.route('/add').post((req, res) => {
@@ -95,6 +96,31 @@ router.route('/search/:searchText').get(async(req, res) => {
         });
     }
   
+});
+
+router.route('/report').get(async(req, res) => {
+    const cursor = Delivery.find();
+
+    const transformer = (doc)=> {
+      return {
+          Destination: doc.destination,
+          PaymentState: doc.pstate,
+          DeliveryType: doc.dtype,
+          DeliveryDate: doc.ddate,
+          DeliveryName: doc.dname,
+          DeliveryState: doc.dstate
+      };
+    }
+  
+    const filename = 'deliveries.csv';
+  
+    res.setHeader('Content-disposition', `attachment; filename=${filename}`);
+    res.writeHead(200, { 'Content-Type': 'text/csv' });
+  
+    res.flushHeaders();
+    
+    var csvStream = fastCsv.format({headers: true}).transform(transformer)
+    cursor.stream().pipe(csvStream).pipe(res);
 });
 
 module.exports = router;

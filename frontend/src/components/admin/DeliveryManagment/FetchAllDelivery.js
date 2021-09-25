@@ -79,6 +79,14 @@ const FetchAllDelivery = ({add,addChange, getDelivery}) => {
 
   }
 
+  function downloadDeliveryReport(){
+    axios.get('/api/deliverys/report').then((res)=> {
+    window.open("data:text/csv;charset=utf-8," + escape(res.data));
+    }).catch((error)=>{
+      console.log(error);
+    });
+  }
+
 
 
   return (
@@ -88,7 +96,14 @@ const FetchAllDelivery = ({add,addChange, getDelivery}) => {
           HandleChange(event.target.value);
         }}></input>
       </div>
-      <h1>All Delivery</h1><br></br><br></br>
+      
+      <div className="row">
+        <h1 className="col-md-6 col-lg-6">All Delivery</h1>
+        <button id="btn-delivery-report" 
+        className="col-md-6 col-lg-6 btn btn-sm btn-primary" onClick={downloadDeliveryReport}>
+          Get Report</button>
+      </div>
+      
       <TableContainer component={Paper}>
       <Table className={classes.table} aria-label="simple table">
         <TableHead>

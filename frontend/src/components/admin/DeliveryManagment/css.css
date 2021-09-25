@@ -5,6 +5,10 @@
     height: 50px;
 }
 
+#btn-delivery-report{
+    left: auto;
+}
+
 .form-check-label
 {
      margin:1px;
