@@ -18,7 +18,6 @@ export default function AddOrders({ editOrder, isEdit }) {
     const [orderdate, setdate] = useState(isEdit ? editOrder.orderdate : "");
 
     
-    
     function sendData(e) {
         e.preventDefault();
         const newOrder = {
@@ -40,8 +39,14 @@ export default function AddOrders({ editOrder, isEdit }) {
 
     }
 
-    function appendItems(){
-        
+    function addDemoData(e){
+      e.preventDefault();
+     setname("Demo Name");
+     setphone("071-2657129");
+     setemail("demouser@demo.com");
+     setitems(["Laptop(Dell)"]);
+     setquantity(2);
+     setdate("2021-10-02");
     }
 
     function editOrderCall(e) {
@@ -206,9 +211,15 @@ export default function AddOrders({ editOrder, isEdit }) {
                                 }} />
                             </div>
                         </div>
-                        <button type='submit' class='btn btn-primary'  >
-                            {isEdit ? 'Edit Order' : 'Add Order'}
-                        </button><br></br>
+                        <div className="row">
+                          <button type='submit' class='btn btn-primary'  >
+                              {isEdit ? 'Edit Order' : 'Add Order'}
+                          </button>
+                          <button className="btn btn-success col-md-2 col-lg-2" onClick={(e) => addDemoData(e)}>
+                              Demo
+                          </button>
+                        </div>
+                      
                     </form>
                 </div>
             </section>
