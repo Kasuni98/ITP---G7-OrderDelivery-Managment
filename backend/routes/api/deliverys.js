@@ -1,7 +1,7 @@
 const router = require('express').Router();
 let Delivery = require('../../models/Delivery');
 let fastCsv = require('fast-csv');
-const PDFDocument = require('pdfkit');
+const PDFDocument = require("pdfkit-table");
 const fs = require('fs');
 const { Base64Encode } = require("base64-stream");
 
@@ -137,14 +137,24 @@ router.route('/pdf').get(async(req, res) => {
   );
 
   await Delivery.find({}).then((deliveries) => {
-      pdf.text("Headers");
-      deliveries.forEach((delivery)=> {
-        pdf.text(delivery.destination + ' ' +delivery.pstate + ' ' + delivery.dtype);
-        pdf.moveDown();
-      });      
+       rows = [];
+       deliveries.forEach((delivery)=> {
+         row = [];
+         row.push(delivery.destination);
+         row.push(delivery.pstate);
+         row.push(delivery.dtype);
+         rows.push(row);
+      });  
   });
 
   res.status(200);
+  const table = { 
+    title: 'Deliveries',
+    headers: ['Destination', 'Status', 'Type'],
+    rows: rows,
+  }
+  const options = {}
+  pdf.table( table, options );
   pdf.pipe(new Base64Encode()).pipe(res);
   pdf.end();
   
