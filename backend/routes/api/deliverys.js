@@ -128,18 +128,26 @@ router.route('/report').get(async(req, res) => {
 });
 
 router.route('/pdf').get(async(req, res) => {
-  let pdf = new PDFDocument();
 
-  pdf.text("hello world", 50, 50);
+  let pdf = new PDFDocument();
   res.setHeader("Content-Type", "application/pdf");
   res.setHeader(
     "Content-Disposition",
     `attachment; filename=test.pdf`
   );
-  
+
+  await Delivery.find({}).then((deliveries) => {
+      pdf.text("Headers");
+      deliveries.forEach((delivery)=> {
+        pdf.text(delivery.destination + ' ' +delivery.pstate + ' ' + delivery.dtype);
+        pdf.moveDown();
+      });      
+  });
+
   res.status(200);
   pdf.pipe(new Base64Encode()).pipe(res);
   pdf.end();
+  
 });
 
 module.exports = router;
