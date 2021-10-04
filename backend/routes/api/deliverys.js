@@ -1,6 +1,10 @@
 const router = require('express').Router();
 let Delivery = require('../../models/Delivery');
 let fastCsv = require('fast-csv');
+const PDFDocument = require('pdfkit');
+const fs = require('fs');
+const { Base64Encode } = require("base64-stream");
+
 
 //adding delivery
 router.route('/add').post((req, res) => {
@@ -121,6 +125,21 @@ router.route('/report').get(async(req, res) => {
     
     var csvStream = fastCsv.format({headers: true}).transform(transformer)
     cursor.stream().pipe(csvStream).pipe(res);
+});
+
+router.route('/pdf').get(async(req, res) => {
+  let pdf = new PDFDocument();
+
+  pdf.text("hello world", 50, 50);
+  res.setHeader("Content-Type", "application/pdf");
+  res.setHeader(
+    "Content-Disposition",
+    `attachment; filename=test.pdf`
+  );
+  
+  res.status(200);
+  pdf.pipe(new Base64Encode()).pipe(res);
+  pdf.end();
 });
 
 module.exports = router;

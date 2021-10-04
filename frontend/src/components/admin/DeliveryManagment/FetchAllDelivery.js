@@ -10,6 +10,7 @@ import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
 import Button from '@material-ui/core/Button';
+const fileSaver = require('file-saver');
 
 
 const useStyles = makeStyles({
@@ -87,6 +88,28 @@ const FetchAllDelivery = ({add,addChange, getDelivery}) => {
     });
   }
 
+  function downloadPdf(){
+    axios.get('/api/deliverys/pdf').then((res)=> {
+      const arraybuffer = base64ToArrayBuffer(res.data);
+      const blob = new Blob([arraybuffer], { type: "application/pdf" });
+      fileSaver.saveAs(blob, "test.pdf");    
+    }).catch((error)=>{
+        console.log(error);
+      });
+  }
+
+  function base64ToArrayBuffer(data) {
+    var binaryString = window.atob(data);
+    var binaryLen = binaryString.length;
+    var bytes = new Uint8Array(binaryLen);
+    for (var i = 0; i < binaryLen; i++) {
+      var ascii = binaryString.charCodeAt(i);
+      bytes[i] = ascii;
+    }
+    return bytes;
+  }
+
+
 
 
   return (
@@ -102,6 +125,9 @@ const FetchAllDelivery = ({add,addChange, getDelivery}) => {
         <button id="btn-delivery-report" 
         className="col-md-6 col-lg-6 btn btn-sm btn-primary" onClick={downloadDeliveryReport}>
           Get Report</button>
+          <button id="btn-delivery-report" 
+        className="col-md-6 col-lg-6 btn btn-sm btn-primary" onClick={downloadPdf}>
+          Get Pdf</button>
       </div>
       
       <TableContainer component={Paper}>
